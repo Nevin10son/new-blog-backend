@@ -29,6 +29,30 @@ app.post("/create",async(req,res) =>{
     })
 })
 
+app.post("/viewmypost",(req,res) =>{
+    let input = req.body
+    let token = req.headers.token
+    jwt.verify(token,"BlogToken",(error, decoded) => {
+        if(decoded && decoded.emailid) {
+                postModel.find(input).then(
+                    (items) => {
+                        res.json(items)
+                        
+                    }
+                ).catch(
+                    (error) => {
+                        res.json({"Status":"Error"})
+                    }
+                )
+        } else {
+            res.json({"Status":"Invalid Authentication"})
+        }
+            
+        }
+    )
+    })
+
+
 app.post("/viewall",(req,res) =>{
     let token = req.headers.token
     jwt.verify(token,"BlogToken",(error, decoded) => {
