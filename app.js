@@ -6,9 +6,12 @@ const jwt = require("jsonwebtoken");
 const userModel = require("./models");
 const postModel = require("./posts");
 
+
 let app = express();
 app.use(express.json());
 app.use(cors());
+
+
 
 mongoose.connect("mongodb+srv://Nevin:nevintensonk@cluster0.0rfrr.mongodb.net/newblogapp?retryWrites=true&w=majority&appName=Cluster0")
 
@@ -25,6 +28,29 @@ app.post("/create",async(req,res) =>{
         }
     })
 })
+
+app.post("/viewall",(req,res) =>{
+    let token = req.headers.token
+    jwt.verify(token,"BlogToken",(error, decoded) => {
+        if(decoded && decoded.emailid) {
+                postModel.find().then(
+                    (items) => {
+                        res.json(items)
+                        
+                    }
+                ).catch(
+                    (error) => {
+                        res.json({"Status":"Error"})
+                    }
+                )
+        } else {
+            res.json({"Status":"Invalid Authentication"})
+        }
+            
+        }
+    )
+    })
+
 
 app.post("/signin", (req, res) => {
     let data = req.body;
