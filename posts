@@ -1,0 +1,20 @@
+const mongoose = require("mongoose")
+let postSchema = mongoose.Schema(
+    {
+        userId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"users"
+        },
+        Message:String,
+
+        DatePosted:{
+            type:Date,
+            default:Date.now
+
+        }
+    }
+
+
+)
+const postModel = mongoose.model("posts",postSchema);
+module.exports= postModel;
