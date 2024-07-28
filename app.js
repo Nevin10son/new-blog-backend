@@ -56,7 +56,7 @@ app.post("/signin", (req, res) => {
     let data = req.body;
     let result = userModel.find({emailid:req.body.emailid}).then(
         (details) => {
-            console.log(details);
+            
             if (details.length > 0) {
                 let comparepassword = bcrypt.compareSync(req.body.password, details[0].password);
                 if (comparepassword){
